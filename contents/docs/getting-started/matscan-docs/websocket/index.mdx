@@ -1,0 +1,84 @@
+---
+title: Websocket Connection
+description: A Detail About Matscan Websocket Server.
+---
+
+### WebSocket Connection Details
+
+| Property          | Details             |
+| ----------------- | ------------------- |
+| **WebSocket URL** | `wss://matscan.xyz` |
+| **Event Name**    | `new_transactions`  |
+
+### Prerequisites
+
+- A Socket.IO-compatible WebSocket client (e.g., `socket.io-client` for JavaScript).
+- A stable internet connection.
+
+## Connecting to the WebSocket
+
+To receive transaction updates:
+
+1. Connect to `wss://matscan.xyz`.
+2. Listen for the `new_transactions` event.
+
+### Example: JavaScript with Socket.IO
+
+```javascript
+import { io } from "socket.io-client";
+
+const socket = io("wss://matscan.xyz", {
+  transports: ["websocket"],
+  reconnection: true,
+});
+
+socket.on("connect", () => {
+  console.log("Connected to Matscan WebSocket");
+});
+
+socket.on("new_transactions", (data) => {
+  console.log("New Transaction:", data);
+});
+
+socket.on("connect_error", (error) => {
+  console.error("Connection Error:", error.message);
+});
+
+socket.on("disconnect", () => {
+  console.log("Disconnected from Matscan WebSocket");
+});
+```
+
+#### Installation
+
+```bash
+npm install socket.io-client
+```
+
+## Event Data Format
+
+The `new_transactions` event emits a JSON object with transaction details.
+
+### Example Payload
+
+```json
+{
+  "title": "Claimed Points",
+  "timestamp": 1746464733649,
+  "amount": "100",
+  "sender": "matscan",
+  "receiver": "system",
+  "txid": "6818efdd27fa98ffac699055"
+}
+```
+
+### Field Descriptions
+
+| Field       | Type   | Description                                 |
+| ----------- | ------ | ------------------------------------------- |
+| `title`     | String | Transaction type (e.g., "Claimed Points").  |
+| `timestamp` | Number | Unix timestamp (milliseconds).              |
+| `amount`    | String | Transaction amount (e.g., "100").           |
+| `sender`    | String | Discord username or "system" if from a bot. |
+| `receiver`  | String | Discord username or "system" if from a bot. |
+| `txid`      | String | Unique transaction ID.                      |

@@ -1,0 +1,220 @@
+---
+title: API Reference
+description: Matscan API Reference
+---
+
+## Base URL
+```md
+api.matscan.xyz
+```
+
+## Available Endpoints
+
+### 1. Tipper Leaderboard
+
+- **Endpoint**: `/leaderboard/tipper`
+- **Method**: `GET`
+- **Description**: Retrieve the top 10 users who have sent the most tips.
+
+#### Response Example
+
+```json
+[
+  { "sender": "user001", "total_amount": 5000 },
+  ...
+]
+```
+
+---
+
+### 2. Recipient Leaderboard
+
+- **Endpoint**: `/leaderboard/receipment`
+- **Method**: `GET`
+- **Description**: Retrieve the top 10 users who have received the most tips.
+
+#### Response Example
+
+```json
+[
+  { "receiver": "rec001", "total_amount": 6000 },
+  ...
+]
+```
+
+---
+
+### 3. Platform Statistics
+
+- **Endpoint**: `/stats`
+- **Method**: `GET`
+- **Description**: Get total number of users, transactions, and the total amount of tips.
+
+#### Response Example
+
+```json
+[
+  {
+    "total_users": 5000,
+    "total_transactions": 1000000,
+    "total_mats": 75000000
+  }
+]
+```
+
+---
+
+## Transactions
+
+The following endpoints allow for retrieving transaction data using different criteria:
+
+---
+
+### 4A. Get Transactions by Range
+
+- **Endpoint**: `/transactions/by/range/{start}/{end}?sort=new|old`
+- **Method**: `GET`
+- **Description**: Retrieve a list of transactions between index range.
+
+#### Parameters
+
+| Parameter | Type    | Description                               |
+| --------- | ------- | ----------------------------------------- |
+| `start`   | Integer | Starting index (e.g., 0)                  |
+| `end`     | Integer | Ending index (e.g., 10). Max: 100 results |
+| `sort`    | String  | (Optional) `new` or `old`                 |
+
+#### Response Example
+
+```json
+[
+  {
+    "txid": "tx001",
+    "type": "Tip",
+    "sender": "user101",
+    "receiver": "rec101",
+    "amount": 200,
+    "timestamp": 1746600000000,
+    "created_at": "2025-05-07T08:00:00.000+00:00"
+  }
+]
+```
+
+---
+
+### 4B. Get Transaction by TXID
+
+- **Endpoint**: `/transactions/by/txid/{txid}`
+- **Method**: `GET`
+- **Description**: Retrieve a specific transaction by its ID.
+
+#### Parameters
+
+| Parameter | Type   | Description    |
+| --------- | ------ | -------------- |
+| `txid`    | String | Transaction ID |
+
+#### Response Example
+
+```json
+{
+  "txid": "tx001",
+  "type": "Tip",
+  "sender": "user101",
+  "receiver": "rec101",
+  "amount": 200,
+  "timestamp": 1746600000000,
+  "created_at": "2025-05-07T08:00:00.000+00:00"
+}
+```
+
+---
+
+### 4C. Get Daily Transaction Summary
+
+- **Endpoint**: `/transactions/daily`
+- **Method**: `GET`
+- **Description**: Retrieve total transaction counts and amounts per day.
+
+#### Response Example
+
+```json
+[
+  { "date": "2025-05-07", "tx_count": 1200, "total_amount": 300000 },
+  ...
+]
+```
+
+---
+
+### 4D. Get Monthly Transaction Summary
+
+- **Endpoint**: `/transactions/monthly`
+- **Method**: `GET`
+- **Description**: Retrieve total transaction counts and amounts per month.
+
+#### Response Example
+
+```json
+[
+  { "month": "2025-05", "tx_count": 5000, "total_amount": 1200000 },
+  ...
+]
+```
+
+---
+
+### 5. All Users Transactions
+
+- **Endpoint**: `/users/transaction/{start}/{end}?sort=new|old`
+- **Method**: `GET`
+- **Description**: Retrieve transaction history for all users within a range.
+
+#### Parameters
+
+| Parameter | Type    | Description                               |
+| --------- | ------- | ----------------------------------------- |
+| `start`   | Integer | Starting index (e.g., 0)                  |
+| `end`     | Integer | Ending index (e.g., 10). Max: 100 results |
+| `sort`    | String  | (Optional) `new` or `old`                 |
+
+#### Response Example
+
+```json
+[
+  {
+    "txid": "tx101",
+    "type": "Tip",
+    "sender": "user201",
+    "receiver": "rec201",
+    "amount": 50,
+    "timestamp": 1746601000000,
+    "created_at": "2025-05-07T08:10:00.000+00:00"
+  }
+]
+```
+
+---
+
+### 6. Get User Profile
+
+- **Endpoint**: `/users/{username}`
+- **Method**: `GET`
+- **Description**: Retrieve a user's profile including balance, account creation date, and transaction count.
+
+#### Parameters
+
+| Parameter  | Type   | Description            |
+| ---------- | ------ | ---------------------- |
+| `username` | String | Target user's username |
+
+#### Response Example
+
+```json
+{
+  "username": "user301",
+  "balance": 10000,
+  "created_at": "2025-05-07T08:00:00.000+00:00",
+  "transaction_count": 50
+}
+```

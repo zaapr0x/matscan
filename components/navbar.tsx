@@ -26,7 +26,7 @@ export function Navbar() {
         <div className="flex items-center justify-between sm:gap-3 ml-1">
           <div className="flex">
             <Link
-              href="https://github.com/nisabmohd/NexDocs"
+              href="https://github.com/zaapr0x/matscan"
               className={buttonVariants({
                 variant: "ghost",
                 size: "icon",
